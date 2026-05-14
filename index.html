@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,6 +33,13 @@
         background: linear-gradient(45deg, #ff4757, #ff6b7a) !important;
         animation: pulse 2s infinite;
         border-left: 5px solid #ffd700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .purchase-alert:hover {
+        transform: translateX(5px);
+        box-shadow: 0 10px 30px rgba(255, 71, 87, 0.6);
     }
 
     @keyframes pulse {
@@ -60,6 +66,167 @@
         color: #666;
         font-size: 0.8rem;
         margin-bottom: 0.3rem;
+    }
+
+    /* Customer Details Modal */
+    .customer-details-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 3000;
+        backdrop-filter: blur(10px);
+    }
+
+    .customer-details-modal.active {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .customer-details-container {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(30px);
+        border-radius: 25px;
+        padding: 3rem;
+        max-width: 500px;
+        width: 90%;
+        text-align: left;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .customer-details-container h2 {
+        color: #333;
+        margin-bottom: 2rem;
+        font-size: 2rem;
+        text-align: center;
+    }
+
+    .detail-row {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+    }
+
+    .detail-row:last-child {
+        border-bottom: none;
+    }
+
+    .detail-label {
+        color: #667eea;
+        font-weight: bold;
+        font-size: 0.9rem;
+        margin-bottom: 0.3rem;
+    }
+
+    .detail-value {
+        color: #333;
+        font-size: 1rem;
+        word-break: break-all;
+    }
+
+    .close-details {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: none;
+        border: none;
+        font-size: 2rem;
+        color: #666;
+        cursor: pointer;
+    }
+
+    /* Customer Info Form Modal */
+    .customer-form-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 2500;
+        backdrop-filter: blur(10px);
+    }
+
+    .customer-form-modal.active {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .customer-form-container {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(30px);
+        border-radius: 25px;
+        padding: 3rem;
+        max-width: 500px;
+        width: 90%;
+        text-align: center;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .customer-form-container h2 {
+        color: #333;
+        margin-bottom: 1.5rem;
+        font-size: 1.8rem;
+    }
+
+    .customer-form-container p {
+        color: #666;
+        margin-bottom: 1.5rem;
+        font-size: 0.95rem;
+    }
+
+    .customer-input {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 1rem;
+        border: 2px solid rgba(102, 126, 234, 0.3);
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.8);
+    }
+
+    .customer-input:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .customer-submit-btn {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .customer-submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
+    }
+
+    .close-customer-form {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: none;
+        border: none;
+        font-size: 2rem;
+        color: #666;
+        cursor: pointer;
     }
 
     /* NEW: Order counter */
@@ -586,6 +753,29 @@
         </div>
     </div>
 
+    <!-- Customer Details Modal -->
+    <div id="customerDetailsModal" class="customer-details-modal">
+        <div class="customer-details-container">
+            <button class="close-details" onclick="closeCustomerDetails()">×</button>
+            <h2>📋 Order Details</h2>
+            <div id="customerDetailsContent"></div>
+        </div>
+    </div>
+
+    <!-- Customer Info Form Modal -->
+    <div id="customerFormModal" class="customer-form-modal">
+        <div class="customer-form-container">
+            <button class="close-customer-form" onclick="closeCustomerForm()">×</button>
+            <h2>📝 Customer Information</h2>
+            <p>Please complete your information to finalize your order</p>
+            <input type="text" id="customerName" class="customer-input" placeholder="Full Name" required>
+            <input type="email" id="customerEmail" class="customer-input" placeholder="Email Address" required>
+            <input type="tel" id="customerPhone" class="customer-input" placeholder="Phone Number" required>
+            <input type="text" id="customerAddress" class="customer-input" placeholder="Delivery Address" required>
+            <button class="customer-submit-btn" onclick="submitCustomerInfo()">✅ Complete Order</button>
+        </div>
+    </div>
+
     <!-- Admin Panel -->
     <div id="adminPanel" class="admin-panel">
         <div class="admin-header">
@@ -598,6 +788,7 @@
         <!-- Orders Section -->
         <div class="product-form" style="background: rgba(255, 71, 87, 0.1); border-left: 4px solid #ff4757;">
             <h4>🛒 Recent Orders <span id="purchaseCount">(0)</span></h4>
+            <p style="font-size: 0.85rem; color: #666; margin-bottom: 1rem;">Click on an order to view customer details</p>
             <div id="purchaseAlerts" class="alert-list"></div>
             <button class="save-btn" onclick="clearOrders()" style="margin-top: 1rem;">🗑️ Clear Orders</button>
         </div>
@@ -730,6 +921,7 @@
 
     let orders = []; // 🔥 Track ALL orders
     let isAdminPanelOpen = false; // 🔥 Track admin panel state
+    let currentOrderIndex = -1; // Track currently viewed order
 
     // 🔥 FIXED: Broadcast to ALL tabs including current one
     function broadcastOrder(orderData) {
@@ -808,12 +1000,12 @@
         const container = document.getElementById('purchaseAlerts');
         if (!container) return;
         
-        container.innerHTML = orders.map(order => `
-            <div class="alert-item purchase-alert">
+        container.innerHTML = orders.map((order, index) => `
+            <div class="alert-item purchase-alert" onclick="viewOrderDetails(${index})">
                 <div class="alert-time">${order.timestamp}</div>
                 <strong>🛒 ${order.product}</strong> 
                 <span style="color:#ffd700;float:right;font-weight:bold;">${order.price}</span>
-                <br><small>${order.ip} • ${order.userAgent}</small>
+                <br><small>${order.customerName || 'No info'}</small>
             </div>
         `).join('');
         
@@ -826,18 +1018,119 @@
         if (counter) counter.textContent = `(${orders.length} orders)`;
     }
 
-    // 🔥 FIXED: Buy button - works in ALL tabs!
-    function sendPurchaseAlert(productTitle, productPrice) {
+    // View order details
+    function viewOrderDetails(index) {
+        currentOrderIndex = index;
+        const order = orders[index];
+        
+        const detailsContent = document.getElementById('customerDetailsContent');
+        detailsContent.innerHTML = `
+            <div class="detail-row">
+                <div class="detail-label">📦 Product</div>
+                <div class="detail-value">${order.product}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">💰 Price</div>
+                <div class="detail-value">${order.price}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">📅 Timestamp</div>
+                <div class="detail-value">${order.timestamp}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">👤 Customer Name</div>
+                <div class="detail-value">${order.customerName || 'Not provided'}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">📧 Email</div>
+                <div class="detail-value">${order.customerEmail || 'Not provided'}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">📞 Phone</div>
+                <div class="detail-value">${order.customerPhone || 'Not provided'}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">📍 Address</div>
+                <div class="detail-value">${order.customerAddress || 'Not provided'}</div>
+            </div>
+        `;
+        
+        document.getElementById('customerDetailsModal').classList.add('active');
+    }
+
+    function closeCustomerDetails() {
+        document.getElementById('customerDetailsModal').classList.remove('active');
+    }
+
+    // Customer form functions
+    function openCustomerForm(productTitle, productPrice) {
+        // Store the product info temporarily
+        window.currentProduct = { title: productTitle, price: productPrice };
+        document.getElementById('customerFormModal').classList.add('active');
+    }
+
+    function closeCustomerForm() {
+        document.getElementById('customerFormModal').classList.remove('active');
+    }
+
+    function submitCustomerInfo() {
+        const name = document.getElementById('customerName').value.trim();
+        const email = document.getElementById('customerEmail').value.trim();
+        const phone = document.getElementById('customerPhone').value.trim();
+        const address = document.getElementById('customerAddress').value.trim();
+
+        if (!name || !email || !phone || !address) {
+            alert('❌ Please fill in all fields!');
+            return;
+        }
+
+        if (!validateEmail(email)) {
+            alert('❌ Please enter a valid email address!');
+            return;
+        }
+
+        if (!validatePhone(phone)) {
+            alert('❌ Please enter a valid phone number!');
+            return;
+        }
+
         const orderData = {
             timestamp: new Date().toLocaleString(),
-            product: productTitle,
-            price: productPrice,
+            product: window.currentProduct.title,
+            price: window.currentProduct.price,
+            customerName: name,
+            customerEmail: email,
+            customerPhone: phone,
+            customerAddress: address,
             ip: 'Live Customer',
             userAgent: navigator.userAgent.slice(0, 50) + '...'
         };
-        
-        // 🔥 Broadcast to ALL tabs (including current one via storage event)
+
         broadcastOrder(orderData);
+        
+        // Clear form
+        document.getElementById('customerName').value = '';
+        document.getElementById('customerEmail').value = '';
+        document.getElementById('customerPhone').value = '';
+        document.getElementById('customerAddress').value = '';
+
+        closeCustomerForm();
+        showNotification('✅ Order placed successfully!');
+    }
+
+    function validateEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
+    function validatePhone(phone) {
+        const phoneRegex = /^[\d\s\-\+\(\)]{10,}$/;
+        return phoneRegex.test(phone.replace(/\s/g, ''));
+    }
+
+    // 🔥 FIXED: Buy button - works in ALL tabs!
+    function sendPurchaseAlert(productTitle, productPrice) {
+        openCustomerForm(productTitle, productPrice);
     }
 
     function clearOrders() {
@@ -944,7 +1237,7 @@
         const code = document.getElementById('adminCode').value;
         if (code === ADMIN_CODE) {
             closeAdminModal();
-            openAdminPanel(); // 🔥 Use fixed function
+            openAdminPanel();
         } else {
             shakeInput();
             document.getElementById('adminCode').value = '';
@@ -981,8 +1274,8 @@
                 
                 sendPurchaseAlert(productTitle, productPrice);
                 
-                btn.textContent = 'Ordered! 🎉';
-                btn.style.background = 'linear-gradient(45deg,#28a745,#20c997)';
+                btn.textContent = 'Opening form... 📝';
+                btn.style.background = 'linear-gradient(45deg,#667eea,#764ba2)';
                 setTimeout(() => {
                     btn.textContent = 'Add to Cart';
                     btn.style.background = 'linear-gradient(45deg,#ffd700,#ffed4e)';
@@ -1000,26 +1293,6 @@
         document.getElementById('adminCode').onkeypress = (e) => {
             if (e.key === 'Enter') checkAdminCode();
         };
-    });
-
-    // Smooth scrolling
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
-    });
-
-    // Header scroll effect
-    window.addEventListener('scroll', () => {
-        const header = document.querySelector('header');
-        if (window.scrollY > 100) {
-            header.style.background = 'rgba(255, 255, 255, 0.15)';
-        } else {
-            header.style.background = 'rgba(255, 255, 255, 0.1)';
-        }
     });
 </script>
 
